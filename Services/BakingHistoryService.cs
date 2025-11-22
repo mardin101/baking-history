@@ -30,7 +30,7 @@ public class BakingHistoryService
         if (entries != null && entries.Count > 0)
         {
             _entries = entries;
-            _nextId = _entries.Max(e => e.Id) + 1;
+            _nextId = (_entries.Any() ? _entries.Max(e => e.Id) : 0) + 1;
         }
     }
 
