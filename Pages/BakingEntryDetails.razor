@@ -1,0 +1,77 @@
+@page "/baking-entry/{id:int}"
+@using BakingHistory.Models
+@using BakingHistory.Services
+@inject BakingHistoryService HistoryService
+@inject NavigationManager Navigation
+
+<PageTitle>Baking Entry Details</PageTitle>
+
+@if (entry == null)
+{
+    <p><em>Entry not found.</em></p>
+}
+else
+{
+    <h1>@entry.TypeOfBake</h1>
+
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Temperatures</h5>
+            <dl class="row">
+                <dt class="col-sm-4">Water Temperature:</dt>
+                <dd class="col-sm-8">@entry.WaterTemperature °C</dd>
+
+                <dt class="col-sm-4">Flour Temperature:</dt>
+                <dd class="col-sm-8">@entry.FlourTemperature °C</dd>
+
+                <dt class="col-sm-4">Room Temperature:</dt>
+                <dd class="col-sm-8">@entry.RoomTemperature °C</dd>
+
+                <dt class="col-sm-4">Dough Temperature (after kneading):</dt>
+                <dd class="col-sm-8">@entry.DoughTemperature °C</dd>
+            </dl>
+
+            <h5 class="card-title mt-4">Timeline</h5>
+            <dl class="row">
+                <dt class="col-sm-4">End Time of Kneading:</dt>
+                <dd class="col-sm-8">@entry.EndTimeOfKneading.ToString("g")</dd>
+
+                <dt class="col-sm-4">Bulk Ferment Time:</dt>
+                <dd class="col-sm-8">@entry.BulkFermentTime.TotalHours.ToString("F2") hours</dd>
+
+                <dt class="col-sm-4">Time of Shaping:</dt>
+                <dd class="col-sm-8">@entry.TimeOfShaping.ToString("g")</dd>
+
+                <dt class="col-sm-4">Time of Baking:</dt>
+                <dd class="col-sm-8">@entry.TimeOfBaking.ToString("g")</dd>
+            </dl>
+
+            @if (!string.IsNullOrWhiteSpace(entry.Comment))
+            {
+                <h5 class="card-title mt-4">Comment</h5>
+                <p class="card-text">@entry.Comment</p>
+            }
+        </div>
+    </div>
+
+    <div class="mt-3">
+        <button class="btn btn-secondary" @onclick="GoBack">Back to List</button>
+    </div>
+}
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+
+    private BakingEntry? entry;
+
+    protected override void OnInitialized()
+    {
+        entry = HistoryService.GetEntry(Id);
+    }
+
+    private void GoBack()
+    {
+        Navigation.NavigateTo("/baking-entries");
+    }
+}
