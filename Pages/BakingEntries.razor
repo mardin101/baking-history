@@ -53,9 +53,9 @@ else
 @code {
     private List<BakingEntry> entries = new();
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
-        entries = HistoryService.GetAllEntries();
+        entries = await HistoryService.GetAllEntriesAsync();
     }
 
     private void AddNewEntry()
@@ -68,9 +68,9 @@ else
         Navigation.NavigateTo($"baking-entry/{id}");
     }
 
-    private void DeleteEntry(int id)
+    private async Task DeleteEntry(int id)
     {
-        HistoryService.DeleteEntry(id);
-        entries = HistoryService.GetAllEntries();
+        await HistoryService.DeleteEntryAsync(id);
+        entries = await HistoryService.GetAllEntriesAsync();
     }
 }

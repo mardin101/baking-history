@@ -65,9 +65,9 @@ else
 
     private BakingEntry? entry;
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
-        entry = HistoryService.GetEntry(Id);
+        entry = await HistoryService.GetEntryAsync(Id);
     }
 
     private void GoBack()
