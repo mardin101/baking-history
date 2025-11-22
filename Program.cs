@@ -8,6 +8,7 @@ builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
 
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
-builder.Services.AddSingleton<BakingHistoryService>();
+builder.Services.AddScoped<LocalStorageService>();
+builder.Services.AddScoped<BakingHistoryService>();
 
 await builder.Build().RunAsync();

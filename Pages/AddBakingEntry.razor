@@ -78,10 +78,10 @@
 
     private double bulkFermentHours = 0;
 
-    private void HandleValidSubmit()
+    private async Task HandleValidSubmit()
     {
         newEntry.BulkFermentTime = TimeSpan.FromHours(bulkFermentHours);
-        HistoryService.AddEntry(newEntry);
+        await HistoryService.AddEntryAsync(newEntry);
         Navigation.NavigateTo("baking-entries");
     }
 
