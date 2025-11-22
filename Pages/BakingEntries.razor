@@ -1,0 +1,76 @@
+@page "/baking-entries"
+@using BakingHistory.Models
+@using BakingHistory.Services
+@inject BakingHistoryService HistoryService
+@inject NavigationManager Navigation
+
+<PageTitle>Baking Entries</PageTitle>
+
+<h1>Baking History</h1>
+
+<div class="mb-3">
+    <button class="btn btn-primary" @onclick="AddNewEntry">Add New Entry</button>
+</div>
+
+@if (entries.Count == 0)
+{
+    <p><em>No baking entries yet. Add your first one!</em></p>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Type of Bake</th>
+                <th>Water Temp (°C)</th>
+                <th>Flour Temp (°C)</th>
+                <th>Room Temp (°C)</th>
+                <th>Dough Temp (°C)</th>
+                <th>Time of Baking</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var entry in entries)
+            {
+                <tr>
+                    <td>@entry.TypeOfBake</td>
+                    <td>@entry.WaterTemperature</td>
+                    <td>@entry.FlourTemperature</td>
+                    <td>@entry.RoomTemperature</td>
+                    <td>@entry.DoughTemperature</td>
+                    <td>@entry.TimeOfBaking.ToString("g")</td>
+                    <td>
+                        <button class="btn btn-sm btn-info" @onclick="() => ViewDetails(entry.Id)">View</button>
+                        <button class="btn btn-sm btn-danger" @onclick="() => DeleteEntry(entry.Id)">Delete</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<BakingEntry> entries = new();
+
+    protected override void OnInitialized()
+    {
+        entries = HistoryService.GetAllEntries();
+    }
+
+    private void AddNewEntry()
+    {
+        Navigation.NavigateTo("/add-baking-entry");
+    }
+
+    private void ViewDetails(int id)
+    {
+        Navigation.NavigateTo($"/baking-entry/{id}");
+    }
+
+    private void DeleteEntry(int id)
+    {
+        HistoryService.DeleteEntry(id);
+        entries = HistoryService.GetAllEntries();
+    }
+}

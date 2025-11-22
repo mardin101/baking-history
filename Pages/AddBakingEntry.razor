@@ -1,0 +1,92 @@
+@page "/add-baking-entry"
+@using BakingHistory.Models
+@using BakingHistory.Services
+@inject BakingHistoryService HistoryService
+@inject NavigationManager Navigation
+
+<PageTitle>Add Baking Entry</PageTitle>
+
+<h1>Add Baking Entry</h1>
+
+<EditForm Model="@newEntry" OnValidSubmit="@HandleValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="mb-3">
+        <label for="typeOfBake" class="form-label">Type of Bake</label>
+        <InputText id="typeOfBake" class="form-control" @bind-Value="newEntry.TypeOfBake" placeholder="e.g., pizza, bread, focaccia" />
+    </div>
+
+    <div class="mb-3">
+        <label for="waterTemp" class="form-label">Water Temperature (°C)</label>
+        <InputNumber id="waterTemp" class="form-control" @bind-Value="newEntry.WaterTemperature" />
+    </div>
+
+    <div class="mb-3">
+        <label for="flourTemp" class="form-label">Flour Temperature (°C)</label>
+        <InputNumber id="flourTemp" class="form-control" @bind-Value="newEntry.FlourTemperature" />
+    </div>
+
+    <div class="mb-3">
+        <label for="roomTemp" class="form-label">Room Temperature (°C)</label>
+        <InputNumber id="roomTemp" class="form-control" @bind-Value="newEntry.RoomTemperature" />
+    </div>
+
+    <div class="mb-3">
+        <label for="doughTemp" class="form-label">Dough Temperature (after kneading and autolyse) (°C)</label>
+        <InputNumber id="doughTemp" class="form-control" @bind-Value="newEntry.DoughTemperature" />
+    </div>
+
+    <div class="mb-3">
+        <label for="endKneading" class="form-label">End Time of Kneading Phase</label>
+        <InputDate Type="InputDateType.DateTimeLocal" id="endKneading" class="form-control" @bind-Value="newEntry.EndTimeOfKneading" />
+    </div>
+
+    <div class="mb-3">
+        <label for="bulkFermentHours" class="form-label">Bulk Ferment Time (hours)</label>
+        <InputNumber id="bulkFermentHours" class="form-control" @bind-Value="bulkFermentHours" />
+    </div>
+
+    <div class="mb-3">
+        <label for="timeShaping" class="form-label">Time of Shaping the Dough</label>
+        <InputDate Type="InputDateType.DateTimeLocal" id="timeShaping" class="form-control" @bind-Value="newEntry.TimeOfShaping" />
+    </div>
+
+    <div class="mb-3">
+        <label for="timeBaking" class="form-label">Time of Baking the Dough</label>
+        <InputDate Type="InputDateType.DateTimeLocal" id="timeBaking" class="form-control" @bind-Value="newEntry.TimeOfBaking" />
+    </div>
+
+    <div class="mb-3">
+        <label for="comment" class="form-label">Comment</label>
+        <InputTextArea id="comment" class="form-control" rows="4" @bind-Value="newEntry.Comment" />
+    </div>
+
+    <div class="mb-3">
+        <button type="submit" class="btn btn-primary">Save Entry</button>
+        <button type="button" class="btn btn-secondary" @onclick="Cancel">Cancel</button>
+    </div>
+</EditForm>
+
+@code {
+    private BakingEntry newEntry = new()
+    {
+        EndTimeOfKneading = DateTime.Now,
+        TimeOfShaping = DateTime.Now,
+        TimeOfBaking = DateTime.Now
+    };
+
+    private double bulkFermentHours = 0;
+
+    private void HandleValidSubmit()
+    {
+        newEntry.BulkFermentTime = TimeSpan.FromHours(bulkFermentHours);
+        HistoryService.AddEntry(newEntry);
+        Navigation.NavigateTo("/baking-entries");
+    }
+
+    private void Cancel()
+    {
+        Navigation.NavigateTo("/baking-entries");
+    }
+}
