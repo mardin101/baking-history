@@ -39,6 +39,35 @@ If you need to deploy manually, you can:
 
 2. The static site content will be in `bin/Release/net10.0/publish/wwwroot`
 
+### Troubleshooting GitHub Pages Deployment
+
+If your GitHub Pages site returns a **404 Not Found** error, check the following:
+
+#### 1. Verify GitHub Pages is Enabled
+- Go to **Settings > Pages** in your repository
+- Ensure **Source** is set to **Deploy from a branch**
+- Ensure **Branch** is set to `gh-pages` and `/ (root)`
+
+#### 2. Check the `gh-pages` Branch Exists
+- The `gh-pages` branch is created automatically on the first deployment
+- Push a commit to `main` to trigger the workflow if the branch doesn't exist yet
+
+#### 3. Verify the Workflow Ran Successfully
+- Go to **Actions** tab in your repository
+- Check that the "Deploy to GitHub Pages" workflow completed without errors
+- Review the workflow logs for any build or deployment failures
+
+#### 4. Common Issues for Blazor WebAssembly Apps
+
+**Missing `.nojekyll` file**: GitHub Pages uses Jekyll by default, which ignores directories starting with underscore (like `_framework`). A `.nojekyll` file in the `wwwroot` directory prevents this behavior. This file is already included in the project.
+
+**Incorrect base path**: The `<base href="/baking-history/" />` in `wwwroot/index.html` must match your repository name for routing to work correctly.
+
+**Assets not loading**: Check browser console for 404 errors on assets. This usually indicates the base path is incorrect or the `.nojekyll` file is missing.
+
+#### 5. Wait for Deployment
+After pushing to `main`, it may take 2-5 minutes for the site to be available. Check the Actions tab to see when the deployment completes.
+
 ### Related Issues
 
 - [Issue #2: Deploy to GitHub Pages](https://github.com/mardin101/baking-history/issues/2)
