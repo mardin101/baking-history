@@ -82,11 +82,11 @@
     {
         newEntry.BulkFermentTime = TimeSpan.FromHours(bulkFermentHours);
         HistoryService.AddEntry(newEntry);
-        Navigation.NavigateTo("/baking-entries");
+        Navigation.NavigateTo("baking-entries");
     }
 
     private void Cancel()
     {
-        Navigation.NavigateTo("/baking-entries");
+        Navigation.NavigateTo("baking-entries");
     }
 }
