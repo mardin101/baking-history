@@ -24,7 +24,7 @@ To enable GitHub Pages for this repository, follow these steps:
 3. In the left sidebar, click on **Pages** under the "Code and automation" section
 4. Under **Source**, select **GitHub Actions**
 5. Wait a few minutes for the deployment to complete after pushing to `main`
-6. Your site will be available at: `https://mardin101.github.io/baking-history/`
+6. Your site will be available at: `https://mardin101.github.io/`
 
 **Note**: The deployment uses GitHub's official Pages deployment actions, which is the modern recommended approach for deploying static sites to GitHub Pages.
 
@@ -56,7 +56,7 @@ If your GitHub Pages site returns a **404 Not Found** error, check the following
 
 **Missing `.nojekyll` file**: GitHub Pages uses Jekyll by default, which ignores directories starting with underscore (like `_framework`). A `.nojekyll` file in the `wwwroot` directory prevents this behavior. This file is already included in the project.
 
-**Incorrect base path**: The `<base href="/baking-history/" />` in `wwwroot/index.html` must match your repository name for routing to work correctly.
+**Incorrect base path**: The `<base href="/" />` in `wwwroot/index.html` is set to deploy the application at the root of the GitHub Pages site.
 
 **Assets not loading**: Check browser console for 404 errors on assets. This usually indicates the base path is incorrect or the `.nojekyll` file is missing.
 
